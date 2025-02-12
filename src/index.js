@@ -1,5 +1,6 @@
 import express from "express";
 import routerHome from "./routes/home.routes.js";
+import routerAuth from "./routes/auth.routes.js";
 import dotenv from "dotenv";
 import sequelize from "./dataBase/config/database.js";
 import cors from "cors";
@@ -18,6 +19,7 @@ app.use(
 );
 
 app.use(routerHome);
+app.use(routerAuth);
 
 sequelize
   .sync({
