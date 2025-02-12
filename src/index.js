@@ -5,6 +5,8 @@ import routerProduct from "./routes/product.routes.js";
 import dotenv from "dotenv";
 import sequelize from "./dataBase/config/database.js";
 import cors from "cors";
+import { initializeData } from "./dataBase/config/initData.js";
+
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -23,16 +25,19 @@ app.use(routerHome);
 app.use(routerAuth);
 app.use(routerProduct);
 
-sequelize
-  .sync({
-    force: false,
-  })
-  .then(() => {
+const syncDatabaseAndStartServer = async () => {
+  try {
+    await sequelize.sync({ force: false });
     console.log("Base de datos sincronizada");
+
+    await initializeData();
+
     app.listen(PORT, () => {
       console.log(`Servidor corriendo en http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     console.error("Error al sincronizar la base de datos", err);
-  });
+  }
+};
+
+syncDatabaseAndStartServer();
