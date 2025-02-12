@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: ccl
+      POSTGRES_USER: johan
+      POSTGRES_PASSWORD: Bellapajarita2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    depends_on:
+      - db
+    environment:
+      PORT: 4000
+      SECRET_KEY: ccl
+      DB_HOST: db
+      DB_NAME: ccl
+      DB_USER: johan
+      DB_PASSWORD: Bellapajarita2024
+      DB_DIALECT: postgres
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+    command: ["npm", "run", "dev"]
+
+volumes:
+  postgres_data:
