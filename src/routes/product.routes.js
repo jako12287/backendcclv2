@@ -6,13 +6,14 @@ import {
   getProductById,
   updateProduct,
 } from "../controllers/product.controller.js";
+import { verifyUser } from "../utils/middlewares/auth.js";
 
 const app = express();
 
-app.get("/api/product", getAllProducts);
-app.get("/api/product/:id", getProductById);
-app.post("/api/product", createProduct);
-app.put("/api/product/:id", updateProduct);
-app.delete("/api/product/:id", deleteProduct);
+app.get("/api/product", verifyUser, getAllProducts);
+app.get("/api/product/:id", verifyUser, getProductById);
+app.post("/api/product", verifyUser, createProduct);
+app.put("/api/product/:id", verifyUser, updateProduct);
+app.delete("/api/product/:id", verifyUser, deleteProduct);
 
 export default app;
